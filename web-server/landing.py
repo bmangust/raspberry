@@ -5,74 +5,62 @@ import RPi.GPIO as G
 
 G.setmode(G.BCM)
 btns = [2,3,4,8]
-leds = [10,12,13,14,15,16,17,18,19,21,24,26]
+bleds = [10,12,14,15,17,18,21,24,26]
+oleds = [13, 19, 16]
 for btn in btns:
     G.setup(btn, G.IN)
-for led in leds:
+for led in bleds:
+    G.setup(led, G.OUT)
+for led in oleds:
     G.setup(led, G.OUT)
 
 app = Flask('feedback')
 socketio = SocketIO(app)
 
+
 @app.route('/')
 def index():
 	return send_file('feedback.html')
+
 
 @app.route('/images/<filename>')
 def get_image(filename):
 	return send_file('images/'+filename)
 
+
 @socketio.on('isPressed')
 def checkButton(recievedData):
+    delay=0.2
     data = {btn : G.input(btn) for btn in btns}
     socketio.emit('button', data)
-    if G.input(btns[0]) == False:
-        raise KeyboardInterrupt
-    elif data.get('3') == False:
-        lights(False)
+    print(data)
+    if G.input(btns[1]) == False:
+        G.output(bleds[0], G.HIGH)
+        print('butt 0 is pressed')
+    elif G.input(btns[0]) == False:
+        for led in oleds:
+            time.sleep(delay)
+            G.output(led, G.HIGH)
+        for led in oleds:
+            time.sleep(delay)
+            G.output(led, G.LOW)
     else:
-        lights(True)
-
-def lights(btn):
-    print('lights')
-    delay=0.2
-    while (btn == False):
-        for i in [2,8,5]:
+        for led in bleds:
             time.sleep(delay)
-            G.output(leds[i], G.HIGH)
-        for i in [2,8,5]:
+            G.output(led, G.LOW)
+        for led in oleds:
             time.sleep(delay)
-            G.output(leds[i], G.LOW)
-    for i in [2,8,5]:
-        time.sleep(delay)
-        G.output(leds[i], G.LOW)
+            G.output(led, G.LOW)
 
-try:
-	socketio.run(app, port=3000, host='0.0.0.0')
-except KeyboardInterrupt:
-	print('exiting')
-finally:
-	G.cleanup()  
+def main():
+    try:
+        socketio.run(app, port=3000, host='0.0.0.0')
+    #except KeyboardInterrupt:
+    #	print('exiting')
+    finally:
+        print('finally')
+        G.cleanup()  
 
-
-"""
-@app.route('/turnOn')
-def turnOn():
-    G.output(led, G.HIGH)
-    return 'turnedOn'
-
-@app.route('/turnOff')
-def turnOff():
-    G.output(led, G.LOW)
-    return 'turnedOff'
-
-
-@app.route('/<state>')
-def turn(state):
-    if (state == 'turnOn'):
-        G.output(led, G.HIGH)
-    elif (state == 'turnOff'):
-        G.output(led, G.LOW)
-    return 'done'
-
-"""
+if __name__ == '__main__':
+    main()
+    #G.cleanup()
