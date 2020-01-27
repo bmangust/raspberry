@@ -16,7 +16,7 @@ G.setup(led2, G.OUT)
 
 now = datetime.datetime.now()  
 
-vk = vk_api.VkApi(token = 'ae9297fd104f698447cbb00b5cb4ca03443acd7cd639b2ac34f68845d908486315c1ec6c4798fb8d78eb1')
+vk = vk_api.VkApi(token = 'YOUR_TOKEN')
  
 param = {
     'count': 1,
