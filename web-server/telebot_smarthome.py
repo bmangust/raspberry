@@ -348,7 +348,7 @@ async def on_callback_query(msg):
 
 #В TOKEN должен находиться ваш токен, полученый при создании бота!
 #замените значение на свои данные!
-TOKEN = "1087035980:AAF5slWHqtHRA61a3GMLcV30Z1Kmheh3Pa0"
+TOKEN = "your-token"
 
 
 bot = telepot.aio.Bot(TOKEN)
