@@ -144,31 +144,37 @@ try:
             GPIO.input(buttons[3])
         ]
         if btns == [1,0,0,0]:
+            print(0)
             for cmd in fullstep_fw_1:
                 #print(cmd)
                 outputCommand(cmd)
                 #time.sleep(0.01)
         elif btns == [0,1,0,0]:
+            print(1)
             for cmd in fullstep_bk_1:
                 #print(cmd)
                 outputCommand(cmd)
                 #time.sleep(0.1)
         elif btns == [0,0,1,0]:
+            print(2)
             for cmd in fullstep_fw_2:
                 #print(cmd)
                 outputCommand(cmd)
                 #time.sleep(0.01)
         elif btns == [0,0,0,1]:
+            print(3)
             for cmd in fullstep_bk_2:
                 #print(cmd)
                 outputCommand(cmd)
                 #time.sleep(0.1)
         elif btns == [1,0,1,0]:
+            print(4)
             for cmd in fullstep_fw:
                 #print(cmd)
                 outputCommand(cmd)
                 #time.sleep(0.01)
         elif btns == [0,1,0,1]:
+            print(5)
             for cmd in fullstep_bk:
                 #print(cmd)
                 outputCommand(cmd)
@@ -176,7 +182,7 @@ try:
         else:
             #print(idle)
             outputCommand(idle)
-        time.sleep(0.0001)            
+        #time.sleep(0.0001)            
 except KeyboardInterrupt:
     print(exit)
     GPIO.cleanup()
