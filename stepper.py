@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
-buttons = [14, 15]
+buttons = [20, 21]
 control_pins = [6,13,19,26]
 for button in buttons:
     GPIO.setup(button, GPIO.IN)
@@ -34,16 +34,16 @@ try:
     while True:
         forward = GPIO.input(buttons[0])
         back = GPIO.input(buttons[1])
-        if forward:
+        if forward: 
           for halfstep in range(8):
             for pin in range(4):
               GPIO.output(control_pins[pin], halfstep_fw[halfstep][pin])
-            time.sleep(0.0005)
+            time.sleep(0.001)
         elif back:
           for halfstep in range(8):
             for pin in range(4):
               GPIO.output(control_pins[pin], halfstep_bk[halfstep][pin])
-            time.sleep(0.0005)
+            time.sleep(0.001)
 except KeyboardInterrupt:
     print(exit)
     GPIO.cleanup()
